@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brew & Bloom Café — Website Copy Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf6ef;
+    --dark: #1a1208;
+    --brown: #5c3d1e;
+    --green: #3d5a3e;
+    --gold: #c49a3c;
+    --light-brown: #e8d5b7;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--dark); }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 60px; background: rgba(250,246,239,0.95);
+    backdrop-filter: blur(8px); border-bottom: 1px solid rgba(92,61,30,0.1);
+  }
+  .logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--brown); letter-spacing: 0.02em; }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--dark); font-size: 0.85rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; opacity: 0.7; transition: opacity 0.2s; }
+  .nav-links a:hover { opacity: 1; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: flex; align-items: center;
+    padding: 120px 60px 80px;
+    background: var(--cream);
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; right: -100px; top: -100px;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,154,60,0.08) 0%, transparent 70%);
+  }
+  .hero-content { max-width: 720px; animation: fadeUp 0.9s ease both; }
+  .hero-tag {
+    display: inline-block; font-size: 0.75rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--gold); font-weight: 500;
+    margin-bottom: 28px; padding: 6px 16px;
+    border: 1px solid rgba(196,154,60,0.3); border-radius: 20px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 5vw, 4.2rem);
+    line-height: 1.15; color: var(--dark); margin-bottom: 28px;
+    font-weight: 700;
+  }
+  .hero h1 em { color: var(--brown); font-style: italic; }
+  .hero-sub {
+    font-size: 1.1rem; line-height: 1.7; color: rgba(26,18,8,0.65);
+    max-width: 580px; margin-bottom: 48px; font-weight: 300;
+  }
+  .hero-cta { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--brown); color: var(--cream); padding: 14px 32px;
+    border: none; border-radius: 4px; font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; font-weight: 500; cursor: pointer; letter-spacing: 0.03em;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover { background: var(--dark); transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent; color: var(--brown); padding: 14px 32px;
+    border: 1.5px solid var(--brown); border-radius: 4px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500;
+    cursor: pointer; letter-spacing: 0.03em; transition: all 0.2s;
+  }
+  .btn-secondary:hover { background: var(--brown); color: var(--cream); }
+  .hero-img {
+    position: absolute; right: 60px; top: 50%; transform: translateY(-50%);
+    width: 420px; height: 500px;
+    background: linear-gradient(135deg, var(--light-brown) 0%, #d4b896 100%);
+    border-radius: 12px 80px 12px 80px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8rem; opacity: 0.6;
+    animation: fadeUp 1.1s ease 0.2s both;
+  }
+
+  /* INTRO */
+  .intro {
+    padding: 100px 60px; max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  }
+  .intro-text h2 {
+    font-family: 'Playfair Display', serif; font-size: 2.2rem; margin-bottom: 24px; color: var(--dark);
+  }
+  .intro-text p { font-size: 1rem; line-height: 1.85; color: rgba(26,18,8,0.7); margin-bottom: 16px; font-weight: 300; }
+  .why-us { display: flex; flex-direction: column; gap: 28px; }
+  .why-card {
+    padding: 28px 32px; background: white; border-radius: 8px;
+    border-left: 3px solid var(--gold);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .why-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+  .why-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; color: var(--brown); }
+  .why-card p { font-size: 0.9rem; line-height: 1.6; color: rgba(26,18,8,0.65); font-weight: 300; }
+
+  /* SERVICES */
+  .services { background: var(--dark); padding: 100px 60px; }
+  .services-inner { max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 16px; font-weight: 500;
+  }
+  .services h2 {
+    font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--cream);
+    margin-bottom: 12px;
+  }
+  .services-subtitle { font-size: 1rem; color: rgba(250,246,239,0.5); margin-bottom: 60px; font-weight: 300; }
+  .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .service-card {
+    padding: 36px; background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(250,246,239,0.08); border-radius: 8px;
+    transition: background 0.2s;
+  }
+  .service-card:hover { background: rgba(255,255,255,0.07); }
+  .service-num { font-size: 0.75rem; color: var(--gold); letter-spacing: 0.15em; margin-bottom: 16px; }
+  .service-card h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--cream); margin-bottom: 16px; }
+  .service-card p { font-size: 0.92rem; line-height: 1.75; color: rgba(250,246,239,0.6); margin-bottom: 20px; font-weight: 300; }
+  .perfect-for { font-size: 0.8rem; color: var(--gold); font-style: italic; padding-top: 16px; border-top: 1px solid rgba(250,246,239,0.08); }
+  .promise {
+    margin-top: 60px; padding: 48px; background: rgba(196,154,60,0.08);
+    border: 1px solid rgba(196,154,60,0.2); border-radius: 8px;
+  }
+  .promise h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--gold); margin-bottom: 16px; }
+  .promise p { font-size: 0.95rem; line-height: 1.8; color: rgba(250,246,239,0.65); font-weight: 300; }
+
+  /* CTA SECTIONS */
+  .cta-hero { padding: 100px 60px; text-align: center; background: var(--cream); }
+  .cta-hero-inner { max-width: 700px; margin: 0 auto; }
+  .cta-hero h2 { font-family: 'Playfair Display', serif; font-size: 2.8rem; margin-bottom: 24px; line-height: 1.2; }
+  .cta-hero p { font-size: 1rem; color: rgba(26,18,8,0.6); margin-bottom: 40px; line-height: 1.7; font-weight: 300; }
+
+  .cta-trust { background: var(--green); padding: 80px 60px; text-align: center; }
+  .cta-trust-inner { max-width: 700px; margin: 0 auto; }
+  .cta-trust h2 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--cream); margin-bottom: 20px; line-height: 1.3; }
+  .cta-trust p { font-size: 0.95rem; color: rgba(250,246,239,0.7); margin-bottom: 36px; line-height: 1.75; font-weight: 300; }
+  .btn-light { background: var(--cream); color: var(--green); padding: 14px 32px; border: none; border-radius: 4px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: transform 0.2s; }
+  .btn-light:hover { transform: translateY(-2px); }
+
+  .cta-footer { background: var(--brown); padding: 80px 60px; }
+  .cta-footer-inner { max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 40px; flex-wrap: wrap; }
+  .cta-footer h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--cream); line-height: 1.3; max-width: 500px; }
+  .cta-footer p { color: rgba(250,246,239,0.6); font-size: 0.9rem; margin-top: 12px; line-height: 1.6; font-weight: 300; }
+  .cta-footer-btns { display: flex; flex-direction: column; gap: 12px; }
+  .btn-outline-light { background: transparent; color: var(--cream); padding: 12px 28px; border: 1.5px solid rgba(250,246,239,0.5); border-radius: 4px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+  .btn-outline-light:hover { background: var(--cream); color: var(--brown); }
+
+  /* FOOTER */
+  footer { background: var(--dark); padding: 40px 60px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+  footer .logo { color: var(--cream); opacity: 0.8; }
+  footer p { font-size: 0.8rem; color: rgba(250,246,239,0.3); }
+
+  /* BADGE */
+  .internship-badge {
+    position: fixed; bottom: 24px; right: 24px; z-index: 200;
+    background: var(--dark); color: var(--cream); padding: 12px 20px;
+    border-radius: 8px; font-size: 0.75rem; line-height: 1.5;
+    border: 1px solid rgba(196,154,60,0.3); box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .internship-badge strong { color: var(--gold); display: block; margin-bottom: 2px; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 100px 24px 60px; }
+    .hero-img { display: none; }
+    .intro { grid-template-columns: 1fr; padding: 60px 24px; gap: 40px; }
+    .services { padding: 60px 24px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .cta-hero, .cta-trust, .cta-footer { padding: 60px 24px; }
+    .cta-footer-inner { flex-direction: column; }
+    footer { padding: 32px 24px; flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Brew & Bloom</div>
+  <ul class="nav-links">
+    <li><a href="#">Menu</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Work Here</a></li>
+    <li><a href="#">Find Us</a></li>
+  </ul>
+  <button class="btn-primary" style="padding:10px 24px;font-size:0.8rem;">Reserve a Table</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <span class="hero-tag">Indiranagar, Bangalore</span>
+    <h1>Your slowdown spot in the middle of <em>Bangalore's rush.</em></h1>
+    <p class="hero-sub">Brew & Bloom is where Indiranagar's professionals, creatives, and curious minds come to think clearly, work deeply, and drink exceptionally well.</p>
+    <div class="hero-cta">
+      <button class="btn-primary">→ Reserve a Table</button>
+      <button class="btn-secondary">See What's On</button>
+    </div>
+  </div>
+  <div class="hero-img">☕</div>
+</section>
+
+<!-- INTRO + WHY US -->
+<section class="intro">
+  <div class="intro-text">
+    <h2>Some cafés serve coffee. We build mornings you look forward to.</h2>
+    <p>Tucked into the tree-lined streets of Indiranagar, Brew & Bloom was built for people who care what goes into their cup — and who want a space that feels like theirs.</p>
+    <p>Our beans are single-origin, our interiors are full of plants you'll want to photograph, and our menu shifts with the season so there's always a reason to come back.</p>
+    <p>Whether you're settling in for a three-hour work session or catching up with someone you've been meaning to meet — this is that place.</p>
+  </div>
+  <div class="why-us">
+    <div class="why-card">
+      <h3>☕ Coffee Worth Talking About</h3>
+      <p>Single-origin beans sourced from farms across India and beyond, roasted fresh and brewed with intention. We can tell you the altitude your coffee was grown at.</p>
+    </div>
+    <div class="why-card">
+      <h3>🌿 A Space That Helps You Think</h3>
+      <p>High ceilings, natural light, plants at every turn, and a noise level that's just right — designed for people who want to be somewhere, not just anywhere.</p>
+    </div>
+    <div class="why-card">
+      <h3>📋 A Menu That Moves With the Season</h3>
+      <p>Every season brings new specials — drinks and bites crafted around what's fresh, local, and worth trying right now. There's always a reason to return.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services">
+  <div class="services-inner">
+    <p class="section-label">What's Brewing</p>
+    <h2>Every cup, every bite —</h2>
+    <p class="services-subtitle">made for the way you like to spend your time.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-num">01 —</div>
+        <h3>Single-Origin Pour Over</h3>
+        <p>Slow-brewed to order using beans from farms in Coorg, Chikmagalur, and rotating international origins. Each cup carries the distinct character of where it was grown — earthy, floral, or bright.</p>
+        <p class="perfect-for">✦ Perfect for coffee drinkers who want to taste the difference, not just feel the caffeine.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">02 —</div>
+        <h3>Signature Bloom Latte</h3>
+        <p>Our house espresso pulled to a tight, caramel-edged shot, layered under velvety steamed milk and finished with a hand-poured bloom pattern. The one Indiranagar regulars order without looking at the menu.</p>
+        <p class="perfect-for">✦ Perfect for first-time visitors and regulars who need something reliable and genuinely good.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">03 —</div>
+        <h3>Seasonal Brunch Plate</h3>
+        <p>A rotating menu built around what's locally available and worth eating right now. Fresh sourdough, thoughtfully seasoned eggs, something green, and a side that surprises you. Changed every 6–8 weeks.</p>
+        <p class="perfect-for">✦ Perfect for weekend visitors and remote workers taking a proper lunch break.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">04 —</div>
+        <h3>Work-Friendly Table Package</h3>
+        <p>Reserve a corner table for up to four hours — includes two beverages, high-speed Wi-Fi, and access to our quiet side of the café. For focused work without the guilt of nursing one cold coffee.</p>
+        <p class="perfect-for">✦ Perfect for freelancers, startup folks, and students whose home office needs a change.</p>
+      </div>
+    </div>
+    <div class="promise">
+      <h3>Our Promise</h3>
+      <p>Every bean we use is traceable, every ingredient is chosen with care, and every person who works here is trained to treat your order like it matters — because it does. We're not a chain trying to feel local. We're local, full stop. Brew & Bloom exists because Bangalore deserves a café that takes both its coffee and its community seriously.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA 1 -->
+<section class="cta-hero">
+  <div class="cta-hero-inner">
+    <p class="section-label" style="text-align:center;">Come In</p>
+    <h2>Your table is already the right one.</h2>
+    <p>Brew & Bloom is open Monday to Sunday in Indiranagar — walk in or reserve your spot for the weekend.</p>
+    <button class="btn-primary" style="font-size:1rem;padding:16px 40px;">→ Reserve a Table</button>
+  </div>
+</section>
+
+<!-- CTA 2 -->
+<section class="cta-trust">
+  <div class="cta-trust-inner">
+    <h2>Bangalore's remote workers, creatives, and coffee people have made this their place.</h2>
+    <p>Over 2,000 cups served every month. A waitlist on Saturday mornings. A community of regulars who'd rather not tell you about us — but we think you deserve to know. Come see what they keep coming back for.</p>
+    <button class="btn-light">→ See What's On This Week</button>
+  </div>
+</section>
+
+<!-- CTA 3 -->
+<section class="cta-footer">
+  <div class="cta-footer-inner">
+    <div>
+      <h2>You're probably 10 minutes from the best coffee you've had this month.</h2>
+      <p>12th Main Road, Indiranagar, Bangalore · Open 8am–9pm, seven days a week · Weekend tables fill up fast.</p>
+    </div>
+    <div class="cta-footer-btns">
+      <button class="btn-outline-light">→ Get Directions</button>
+      <button class="btn-outline-light">→ Follow on Instagram</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo">Brew & Bloom</div>
+  <p>© 2026 · Indiranagar, Bangalore · contact@brewandbloom.in</p>
+</footer>
+
+<div class="internship-badge">
+  <strong>Future Interns · PE Task 1</strong>
+  Akula Jagadeesh · FIT/APR26/PE2483<br>
+  AI Website Copy Generator
+</div>
+
+</body>
+</html>
