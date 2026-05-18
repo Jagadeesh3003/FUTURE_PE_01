@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Threads & Thread Co. — UGC Ad Content Pack</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f5f0;
+    --accent: #ff4d00;
+    --yellow: #ffd600;
+    --gray: #1a1a1a;
+    --mid: #2e2e2e;
+    --text-muted: rgba(245,245,240,0.5);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Space Grotesk', sans-serif; background: var(--black); color: var(--white); }
+
+  /* NAV */
+  nav {
+    padding: 20px 60px; display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    position: sticky; top: 0; background: var(--black); z-index: 100;
+  }
+  .brand { font-size: 1rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .brand span { color: var(--accent); }
+  .nav-tag { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); padding: 6px 14px; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; }
+
+  /* HERO */
+  .hero { padding: 100px 60px 80px; position: relative; overflow: hidden; }
+  .hero::after {
+    content: 'UGC'; position: absolute; right: -20px; top: 40px;
+    font-size: 20rem; font-weight: 700; color: rgba(255,255,255,0.02);
+    line-height: 1; pointer-events: none; letter-spacing: -0.05em;
+  }
+  .hero-tag { display: inline-flex; align-items: center; gap: 8px; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 32px; }
+  .hero-tag::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+  .hero h1 { font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 28px; }
+  .hero h1 em { font-family: 'Playfair Display', serif; font-style: italic; color: var(--yellow); }
+  .hero-sub { font-size: 1.05rem; color: var(--text-muted); max-width: 560px; line-height: 1.7; font-weight: 300; margin-bottom: 52px; }
+  .hero-meta { display: flex; gap: 40px; flex-wrap: wrap; }
+  .meta-item { display: flex; flex-direction: column; gap: 4px; }
+  .meta-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+  .meta-value { font-size: 0.9rem; font-weight: 600; color: var(--white); }
+
+  /* HOOKS SECTION */
+  .hooks { padding: 80px 60px; background: var(--gray); }
+  .section-header { display: flex; align-items: baseline; gap: 20px; margin-bottom: 48px; }
+  .section-num { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+  .section-header h2 { font-size: 1.8rem; font-weight: 700; }
+  .hooks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; }
+  .hook-card {
+    padding: 28px 32px; background: var(--mid); border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.05);
+    position: relative; overflow: hidden; transition: border-color 0.2s;
+  }
+  .hook-card:hover { border-color: rgba(255,214,0,0.3); }
+  .hook-type { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; }
+  .hook-text { font-size: 1.15rem; font-weight: 500; line-height: 1.5; color: var(--white); margin-bottom: 16px; font-style: italic; }
+  .hook-why { font-size: 0.8rem; line-height: 1.6; color: var(--text-muted); font-weight: 300; }
+  .hook-num { position: absolute; top: 20px; right: 24px; font-size: 3rem; font-weight: 700; color: rgba(255,255,255,0.04); line-height: 1; }
+
+  /* SCRIPTS SECTION */
+  .scripts { padding: 80px 60px; }
+  .scripts-tabs { display: flex; gap: 4px; margin-bottom: 48px; flex-wrap: wrap; }
+  .tab {
+    padding: 10px 24px; border-radius: 4px; font-size: 0.8rem; font-weight: 600;
+    letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.1); background: transparent; color: var(--text-muted);
+    transition: all 0.2s;
+  }
+  .tab.active { background: var(--accent); color: var(--white); border-color: var(--accent); }
+  .tab:hover:not(.active) { border-color: rgba(255,255,255,0.3); color: var(--white); }
+
+  .script-panel { display: none; }
+  .script-panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+  .script-card { background: var(--gray); border-radius: 12px; overflow: hidden; }
+  .script-header { padding: 28px 36px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .script-title { font-size: 1.2rem; font-weight: 700; }
+  .script-meta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .badge { padding: 4px 12px; border-radius: 20px; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .badge-accent { background: rgba(255,77,0,0.15); color: var(--accent); border: 1px solid rgba(255,77,0,0.3); }
+  .badge-yellow { background: rgba(255,214,0,0.1); color: var(--yellow); border: 1px solid rgba(255,214,0,0.2); }
+  .badge-white { background: rgba(255,255,255,0.06); color: var(--white); border: 1px solid rgba(255,255,255,0.1); }
+
+  .script-body { padding: 36px; }
+  .script-segment { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .script-segment:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .segment-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .segment-label span { color: var(--text-muted); font-size: 0.6rem; }
+  .segment-text { font-size: 1rem; line-height: 1.75; color: rgba(245,245,240,0.85); font-weight: 300; font-style: italic; }
+
+  /* PLATFORMS */
+  .platforms { padding: 80px 60px; background: var(--gray); }
+  .platforms-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .platform-card { background: var(--mid); border-radius: 10px; overflow: hidden; }
+  .platform-header { padding: 20px 24px; display: flex; align-items: center; gap: 12px; }
+  .platform-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+  .ig { background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); }
+  .yt { background: #ff0000; }
+  .fb { background: #1877f2; }
+  .platform-name { font-size: 0.9rem; font-weight: 700; }
+  .platform-meta { font-size: 0.7rem; color: var(--text-muted); }
+  .platform-body { padding: 0 24px 24px; }
+  .platform-script { font-size: 0.85rem; line-height: 1.7; color: rgba(245,245,240,0.7); font-style: italic; margin-bottom: 16px; font-weight: 300; }
+  .platform-caption { font-size: 0.78rem; line-height: 1.6; color: var(--text-muted); padding: 12px; background: rgba(0,0,0,0.2); border-radius: 6px; }
+
+  /* CTA BANK */
+  .cta-bank { padding: 80px 60px; }
+  .cta-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .cta-card {
+    padding: 20px 24px; border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.06); background: var(--gray);
+    display: flex; gap: 16px; align-items: flex-start;
+    transition: border-color 0.2s;
+  }
+  .cta-card:hover { border-color: rgba(255,214,0,0.2); }
+  .cta-index { font-size: 0.7rem; color: var(--yellow); font-weight: 700; min-width: 24px; margin-top: 2px; }
+  .cta-content { flex: 1; }
+  .cta-type { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+  .cta-text { font-size: 0.88rem; line-height: 1.55; color: rgba(245,245,240,0.85); font-style: italic; font-weight: 300; }
+
+  /* BADGE FOOTER */
+  .internship-badge {
+    position: fixed; bottom: 24px; right: 24px; z-index: 200;
+    background: var(--gray); color: var(--white); padding: 12px 20px;
+    border-radius: 8px; font-size: 0.72rem; line-height: 1.6;
+    border: 1px solid rgba(255,77,0,0.3);
+  }
+  .internship-badge strong { color: var(--accent); display: block; margin-bottom: 2px; }
+
+  footer { padding: 48px 60px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+  footer p { font-size: 0.8rem; color: var(--text-muted); }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 900px) {
+    nav, .hero, .hooks, .scripts, .platforms, .cta-bank, footer { padding-left: 24px; padding-right: 24px; }
+    .platforms-grid { grid-template-columns: 1fr; }
+    .cta-grid { grid-template-columns: 1fr; }
+    .hooks-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">Threads <span>&</span> Thread Co.</div>
+  <div class="nav-tag">UGC Ad Content Pack</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">Future Interns · PE Task 2</div>
+  <h1>UGC Ads that feel<br><em>real.</em></h1>
+  <p class="hero-sub">A complete AI-generated UGC Ad Content Pack for Threads & Thread Co., Hyderabad — including hooks, scripts, platform adaptations, captions, and a CTA bank.</p>
+  <div class="hero-meta">
+    <div class="meta-item"><span class="meta-label">Brand</span><span class="meta-value">Threads & Thread Co.</span></div>
+    <div class="meta-item"><span class="meta-label">City</span><span class="meta-value">Hyderabad</span></div>
+    <div class="meta-item"><span class="meta-label">Platforms</span><span class="meta-value">Instagram · YouTube · Facebook</span></div>
+    <div class="meta-item"><span class="meta-label">Intern</span><span class="meta-value">Akula Jagadeesh</span></div>
+  </div>
+</section>
+
+<!-- HOOKS -->
+<section class="hooks">
+  <div class="section-header">
+    <span class="section-num">01 —</span>
+    <h2>Hook Bank (5 Hooks)</h2>
+  </div>
+  <div class="hooks-grid">
+    <div class="hook-card">
+      <div class="hook-num">01</div>
+      <div class="hook-type">Pain Point Hook</div>
+      <div class="hook-text">"I was tired of spending ₹3,000 on something that looked cheap online."</div>
+      <div class="hook-why">Calls out budget frustration + quality disappointment. Relatable before the brand appears.</div>
+    </div>
+    <div class="hook-card">
+      <div class="hook-num">02</div>
+      <div class="hook-type">Curiosity Hook</div>
+      <div class="hook-text">"Okay so I found a clothing store in Hyderabad that nobody's talking about yet."</div>
+      <div class="hook-why">"Nobody's talking about yet" triggers discovery instinct. Viewer feels they're getting insider info.</div>
+    </div>
+    <div class="hook-card">
+      <div class="hook-num">03</div>
+      <div class="hook-type">Social Proof Hook</div>
+      <div class="hook-text">"Three of my friends asked where I got this outfit within the same day."</div>
+      <div class="hook-why">Real-world social signal — not a brand claim. Audience immediately wants what caused that reaction.</div>
+    </div>
+    <div class="hook-card">
+      <div class="hook-num">04</div>
+      <div class="hook-type">Contrast Hook</div>
+      <div class="hook-text">"I used to avoid college fests because I never had anything to wear. Until this."</div>
+      <div class="hook-why">Before → turning point structure. "Until this" creates a visual cliff-hanger — they keep watching.</div>
+    </div>
+    <div class="hook-card">
+      <div class="hook-num">05</div>
+      <div class="hook-type">Bold Claim Hook</div>
+      <div class="hook-text">"Affordable and actually stylish isn't supposed to exist in the same sentence."</div>
+      <div class="hook-why">Challenges a widely held belief. Viewer agrees or is curious to prove it wrong — either way, they stay.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SCRIPTS -->
+<section class="scripts">
+  <div class="section-header">
+    <span class="section-num">02 —</span>
+    <h2>UGC Ad Scripts (3 Full Scripts)</h2>
+  </div>
+  <div class="scripts-tabs">
+    <button class="tab active" onclick="showScript(0)">Script 1 — Budget & Style</button>
+    <button class="tab" onclick="showScript(1)">Script 2 — Occasion / Fest</button>
+    <button class="tab" onclick="showScript(2)">Script 3 — Identity</button>
+  </div>
+
+  <div class="script-panel active" id="script-0">
+    <div class="script-card">
+      <div class="script-header">
+        <div class="script-title">Budget + Style Angle</div>
+        <div class="script-meta">
+          <span class="badge badge-accent">Pain Point Hook</span>
+          <span class="badge badge-yellow">Instagram Reels</span>
+          <span class="badge badge-white">~35 sec</span>
+        </div>
+      </div>
+      <div class="script-body">
+        <div class="script-segment">
+          <div class="segment-label">Hook <span>0–3 sec</span></div>
+          <div class="segment-text">"I was tired of spending ₹3,000 on something that looked cheap online."</div>
+        </div>
+        <div class="script-segment">
+          <div class="segment-label">Problem <span>3–10 sec</span></div>
+          <div class="segment-text">"Honestly, every time I ordered clothes online, it was either the colour was off, the fabric felt terrible, or it just looked nothing like the photo. And walking into malls in Hyderabad — forget it, everything decent starts at like ₹2,500 minimum."</div>
+        </div>
+        <div class="script-segment">
+          <div class="segment-label">Solution <span>10–25 sec</span></div>
+          <div class="segment-text">"So my friend dragged me to this place called Threads & Thread Co. and I was not expecting much. But okay — the fits were actually good. Like, proper fusion stuff — the kind you'd see on Pinterest but actually wearable for college or a casual dinner. And the prices? I picked up two outfits for under ₹1,800 total."</div>
+        </div>
+        <div class="script-segment">
+          <div class="segment-label">Proof <span>25–35 sec</span></div>
+          <div class="segment-text">"I wore one of them to a friend's birthday in Jubilee Hills and three people genuinely stopped me to ask where I got it. I felt bad not telling them — so I'm telling you."</div>
+        </div>
+        <div class="script-segment">
+          <div class="segment-label">CTA <span>35–42 sec</span></div>
+          <div class="segment-text">"They're on Instagram, link's in the bio. Go check — you'll find something, I promise."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="script-panel" id="script-1">
+    <div class="script-card">
+      <div class="script-header">
+        <div class="script-title">Occasion / Event Angle</div>
+        <div class="script-meta">
+          <span class="badge badge-accent">Contrast Hook</span>
+          <span class="badge badge-yellow">YouTube Shorts</span>
+          <span class="badge badge-white">~40 sec</span>
+        </div>
+      </div>
+      <div class="script-body">
+        <div class="script-segment">
+          <div class="segment-label">Hook <span>0–3 sec</span></div>
+          <div class="segment-text">"I used to avoid college fests because I never had anything to wear. Until this."</div>
+        </div>
+        <div class="script-segment">
+          <div class="segment-label">Problem <span>3–10 sec</span></div>
+          <div class="segment-text">"Okay so every time a function or fest came up — farewell, cultural night, wedding of some distant relative — I'd just stress out. Either everything in my wardrobe was too casual or too formal, or I'd spend way too much trying to fix it last minute."</div>
+        </div>
+        <div class="script-segment">
+          <div class="segment-label">Solution <span>10–25 sec</span></div>
+          <div class="segment-text">"I stumbled across Threads & Thread Co. on Instagram a few weeks before our college cultural fest. They do this fusion stuff — Indo-western, streetwear, occasion wear — and it's exactly the middle ground I was always looking for."</div>
+        </div>
+        <div class="script-segment">
+          <div class="segment-label">Proof <span>25–35 sec</span></div>
+          <div class="segment-text">"I got this kurta-jacket combo from them and honestly it was the best I'd felt at any event this year. My mom liked it. My friends liked it. Even my professor made a comment — which was unexpected but appreciated."</div>
+        </div>
+        <div class="script-segment">
+          <div class="segment-label">CTA <span>35–42 sec</span></div>
+          <div class="segment-text">"Search Threads & Thread Co. Hyderabad — link's below. Fest season's coming, sort your wardrobe now before you're panicking at 11pm the night before."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="script-panel" id="script-2">
+    <div class="script-card">
+      <div class="script-header">
+        <div class="script-title">Identity / Aspiration Angle</div>
+        <div class="script-meta">
+          <span class="badge badge-accent">Bold Claim Hook</span>
+          <span class="badge badge-yellow">Facebook Reels</span>
+          <span class="badge badge-white">~45 sec</span>
+        </div>
+      </div>
+      <div class="script-body">
+        <div class="script-segment">
+          <div class="segment-label">Hook <span>0–3 sec</span></div>
+          <div class="segment-text">"Affordable and actually stylish isn't supposed to exist in the same sentence."</div>
+        </div>
+        <div class="script-segment">
+          <div class="segment-label">Problem <span>3–10 sec</span></div>
+          <div class="segment-text">"That's what I believed for a long time. Like, you either spend a lot and look good, or you save money and settle. And when you're in your early twenties just starting out in Hyderabad — a job, rent, going out, all of it adding up — fashion is usually the first thing that gets cut."</div>
+        </div>
+        <div class="script-segment">
+          <div class="segment-label">Solution <span>10–25 sec</span></div>
+          <div class="segment-text">"Threads & Thread Co. kind of broke that rule for me. It's this local brand here in Hyderabad — they've got streetwear, fusion, occasion stuff — that actually looks like it has some thought behind it. And the pricing is genuinely honest."</div>
+        </div>
+        <div class="script-segment">
+          <div class="segment-label">Proof <span>25–38 sec</span></div>
+          <div class="segment-text">"Half my current wardrobe is from there and every single time I wear something, someone asks. My colleague thought I'd started shopping from some premium brand in Banjara Hills. I said nah, it's local — and I said it with full pride."</div>
+        </div>
+        <div class="script-segment">
+          <div class="segment-label">CTA <span>38–46 sec</span></div>
+          <div class="segment-text">"Tag someone who keeps saying they can't afford to dress well. Then go check out their page — Threads & Thread Co. Hyderabad. I think you'll be surprised."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLATFORMS -->
+<section class="platforms">
+  <div class="section-header">
+    <span class="section-num">03 —</span>
+    <h2>Platform Adaptations</h2>
+  </div>
+  <div class="platforms-grid">
+    <div class="platform-card">
+      <div class="platform-header">
+        <div class="platform-icon ig">📸</div>
+        <div>
+          <div class="platform-name">Instagram Reels</div>
+          <div class="platform-meta">15–30 sec · Fast & punchy</div>
+        </div>
+      </div>
+      <div class="platform-body">
+        <div class="platform-script">"I was tired of spending ₹3,000 on stuff that looked nothing like the photo. Threads & Thread Co. — fusion fits, streetwear, occasion stuff. Two outfits under ₹1,800. Wore one out. THREE people asked where I got it. Link's in the bio."</div>
+        <div class="platform-caption">spent ₹1,800. got asked about my outfit 3 times. math mathed 🧮<br>link in bio 👇<br><em style="color:rgba(255,255,255,0.3)">#HyderabadFashion #ThreadsAndThread #FusionWear</em></div>
+      </div>
+    </div>
+    <div class="platform-card">
+      <div class="platform-header">
+        <div class="platform-icon yt">▶</div>
+        <div>
+          <div class="platform-name">YouTube Shorts</div>
+          <div class="platform-meta">30–45 sec · Story-driven</div>
+        </div>
+      </div>
+      <div class="platform-body">
+        <div class="platform-script">"Okay so here's what happened — I've been burned so many times buying clothes online. Wrong colour, wrong fit, fabric feels like paper. Found Threads & Thread Co. in Hyderabad. Left with two outfits under ₹1,800. Quality was actually good — not 'good for the price' good. Just good."</div>
+        <div class="platform-caption">Found a local Hyderabad clothing brand that delivers on quality and price. Fusion wear, streetwear, occasion fits. Sharing because I wish someone had told me sooner.<br><em style="color:rgba(255,255,255,0.3)">#HyderabadClothing #LocalBrand</em></div>
+      </div>
+    </div>
+    <div class="platform-card">
+      <div class="platform-header">
+        <div class="platform-icon fb">f</div>
+        <div>
+          <div class="platform-name">Facebook Reels</div>
+          <div class="platform-meta">45–55 sec · Community-feel</div>
+        </div>
+      </div>
+      <div class="platform-body">
+        <div class="platform-script">"Can I be honest? I spent too long buying clothes that didn't represent who I wanted to be. Someone mentioned Threads & Thread Co. I went in person. Proper range — fusion, streetwear, occasion wear. Prices that make sense. I've since gone back twice. Tag a friend who needs a wardrobe upgrade."</div>
+        <div class="platform-caption">Found a Hyderabad clothing brand worth sharing with the whole group chat. 👕 Tag a friend who's been saying they need new clothes 👇<br><em style="color:rgba(255,255,255,0.3)">#HyderabadFashion #LocalBrand</em></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANK -->
+<section class="cta-bank">
+  <div class="section-header">
+    <span class="section-num">04 —</span>
+    <h2>CTA Bank (10 Variations)</h2>
+  </div>
+  <div class="cta-grid">
+    <div class="cta-card"><div class="cta-index">01</div><div class="cta-content"><div class="cta-type">Soft Visit</div><div class="cta-text">"Check them out when you get a chance — their page is worth five minutes of your time."</div></div></div>
+    <div class="cta-card"><div class="cta-index">02</div><div class="cta-content"><div class="cta-type">Curiosity</div><div class="cta-text">"Go to their profile and just see if something catches your eye. No pressure."</div></div></div>
+    <div class="cta-card"><div class="cta-index">03</div><div class="cta-content"><div class="cta-type">Community</div><div class="cta-text">"Tag a friend who keeps saying they have nothing to wear."</div></div></div>
+    <div class="cta-card"><div class="cta-index">04</div><div class="cta-content"><div class="cta-type">Urgency</div><div class="cta-text">"Festival season's here and the good pieces go fast — don't wait and regret it."</div></div></div>
+    <div class="cta-card"><div class="cta-index">05</div><div class="cta-content"><div class="cta-type">Social Follow</div><div class="cta-text">"Follow their Instagram — they drop new stuff regularly and it sells out quietly."</div></div></div>
+    <div class="cta-card"><div class="cta-index">06</div><div class="cta-content"><div class="cta-type">Location (Hyderabad)</div><div class="cta-text">"If you're in Hyderabad, just go in person once — Madhapur/Banjara Hills area. Worth the trip."</div></div></div>
+    <div class="cta-card"><div class="cta-index">07</div><div class="cta-content"><div class="cta-type">Offer</div><div class="cta-text">"They run occasional offers — follow so you don't miss the next one."</div></div></div>
+    <div class="cta-card"><div class="cta-index">08</div><div class="cta-content"><div class="cta-type">Link / Story</div><div class="cta-text">"Link's in the bio — takes 30 seconds to browse and you'll probably find something."</div></div></div>
+    <div class="cta-card"><div class="cta-index">09</div><div class="cta-content"><div class="cta-type">Question (Comment-bait)</div><div class="cta-text">"What's your go-to style — streetwear, fusion, or occasion? Drop it below."</div></div></div>
+    <div class="cta-card"><div class="cta-index">10</div><div class="cta-content"><div class="cta-type">FOMO</div><div class="cta-text">"Half my friend group already knows about this. Now you do too — don't be the last one."</div></div></div>
+  </div>
+</section>
+
+<footer>
+  <div class="brand">Threads <span style="color:var(--accent)">&</span> Thread Co.</div>
+  <p>Future Interns · Prompt Engineering Task 2 · Akula Jagadeesh · FIT/APR26/PE2483</p>
+</footer>
+
+<div class="internship-badge">
+  <strong>Future Interns · PE Task 2</strong>
+  Akula Jagadeesh · FIT/APR26/PE2483<br>
+  AI UGC Ad Content Pack
+</div>
+
+<script>
+  function showScript(index) {
+    document.querySelectorAll('.script-panel').forEach((p, i) => {
+      p.classList.toggle('active', i === index);
+    });
+    document.querySelectorAll('.tab').forEach((t, i) => {
+      t.classList.toggle('active', i === index);
+    });
+  }
+</script>
+</body>
+</html>
